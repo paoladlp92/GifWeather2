@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>gifs Climaticos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <LINK href="style8.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div class="container1">
+        <div class="row">
+
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-4">
+                <h1>Gifs Climaticos</h1>
+            </div>
+        </div>
+
+        <div class="container2">
+            <div class="row">
+                <div class="col-md-6 offset-md-4">
+                    <form class="form-inline">
+                        <label class="mr-sm-2" for="inlineFormCustomSelect">Elige ciudad Mexicana:</label>
+                        <input type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2" placeholder="ej:Monterrey">
+                        <div class="input-group-prepend">
+                        </div>
+                        <button type="submit" id="submitB" class="btn btn-primary mb-2">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container3">
+                <div class="row">
+                        <div class="col-md-6 offset-md-4">
+        <div id="city-view">Ciudad: <span id="ciudad"></span>
+            Clima: <span id="clima"></span>
+        </div>
+        <div id="images"></div>
+    </div>
+</div>
+</div>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+            <script type="text/javascript">
+                var putCity;
+
+                $("#submitB").on("click", function (event) {
+                    event.preventDefault();
+                    clear();
+                    var getCity = $("#inlineFormInputName2").val().trim();
+                    var putCity = $("<p>");
+                    putCity.attr("id");
+                    putCity.text(getCity);
+                    $("#ciudad").append(putCity);
+
+                    var putCity = $("#inlineFormInputName2").val();
+                    var APIKey = "0273302ea17d84a29b00b53473f15756";
+                    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + putCity + ",mx&appid=" + APIKey;
+
+                    $.ajax({
+                        url: queryURL,
+                        method: "GET"
+                    })
+                        .then(function (response) {
+
+                            console.log(queryURL);
+                            console.log(response);
+
+                            //generate list of five movies according to weather.
+
+                            if (response.weather[0].main === "Clouds") {
+                                $("#clima").append("esta nublado");
+                                var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=cloud";
+                                $.ajax({
+                                    url: queryURL,
+                                    method: "GET"
+                                })
+                                    .then(function (response) {
+
+                                        var imageUrl = response.data.image_original_url;
+                                        var catImage = $("<img>");
+                                        catImage.attr("src", imageUrl);
+                                        $("#images").prepend(catImage);
+
+                                    });
+                            }
+                           
+                            if (response.weather[0].main === "Clear") {
+                                $("#clima").append("Sol calientito");
+
+                                var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=sun";
+                                $.ajax({
+                                    url: queryURL,
+                                    method: "GET"
+                                })
+                                    .then(function (response) {
+
+                                        var imageUrl = response.data.image_original_url;
+                                        var catImage = $("<img>");
+                                        catImage.attr("src", imageUrl);
+                                        $("#images").prepend(catImage);
+
+                                    });
+                            }
+                            if (response.weather[0].main === "Rain") {
+                                $("#clima").append("Esta lloviendo...");
+                                var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=raining";
+                                $.ajax({
+                                    url: queryURL,
+                                    method: "GET"
+                                })
+                                    .then(function (response) {
+
+                                        var imageUrl = response.data.image_original_url;
+                                        var catImage = $("<img>");
+                                        catImage.attr("src", imageUrl);
+                                        $("#images").prepend(catImage);
+
+                                    });
+                            }
+                            if (response.weather[0].main === "Snow") {
+                                $("#clima").append("Nevando?!?!?!?");
+                                var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=snow";
+                                $.ajax({
+                                    url: queryURL,
+                                    method: "GET"
+                                })
+                                    .then(function (response) {
+
+                                        var imageUrl = response.data.image_original_url;
+                                        var catImage = $("<img>");
+                                        catImage.attr("src", imageUrl);
+                                        $("#images").prepend(catImage);
+                                    });      
+                            }  
+                        });  
+                });
+               
+                function restart() {
+                    firstNumber = "";
+                    secondNumber = "";
+                    operator = "";
+                    isOperatorChosen = false;
+                    isCalculated = false;
+
+                    $("#first-number, #second-number, #operator, #result").empty();
+                }
+                function clear() {
+                    $("#images").empty();
+                    $("#ciudad").empty();
+                    $("#clima").empty();
+                }
+            </script>
+        
+</body>
+
+</html>
