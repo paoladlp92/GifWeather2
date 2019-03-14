@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="300">
+  <title>Weather according to the Internet:</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <style>
+body {
+background-color: black;
+}
+
+#entriesHere {
+  font-size: 50px;
+  color: white;
+}
+
+.container {
+  max-width: 1800px;
+  height: 1200px;
+
+}
+
+.title{
+  background-color: rgb(255, 0, 170);
+}
+
+#images{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+
+}
+    </style>
+
+</head>
+
+<body>
+
+<div class=container> 
+    <div class="row justify-content-center title">
+  <span id="entriesHere"></span>
+</div>
+<div class="row justify-content-center">
+  <div id="images"></div>
+</div>
+   </div> 
+   
+  
+  
+  
+  <script type="text/javascript">
+  //momentjs wk7 d3
+//do interval that does loop
+ // var windowTimeout = setTimeout(function() {
+//location.reload (); }, 10000);
+
+var putCity;
+//$("#random").on("click", function (event) {
+   // event.preventDefault();
+$.ajax({
+        method: "GET",
+        //consigue base de datos works onluy with submit2?
+        url: "/submit2",
+        //en formato json
+        contentType: "application/json",
+        dataType: 'json',
+        //pone la info
+      }).then(function (response) {  
+        
+        //console.log(response[0]);   
+        //console.log(response[0]);
+         //var myJSON = JSON.stringify(response);
+         //console.log(response[0].name);
+      
+      
+         //choose second for option SHORTCUT
+         //for (let index = 0; index < 20; index++) {   
+          //console.log(response[i].name);
+             // }
+
+           var cityRandom = Math.floor((Math.random() * 20) + 1);
+          
+           //document.getElementById("entriesHere").append(response[index].name);
+      
+          var myRandomCity = response[cityRandom].name;
+           document.getElementById("entriesHere").append(response[cityRandom].name);
+     
+    clear();
+    var getCity = $(response[cityRandom].name).val();
+    var putCity = $("<p>");
+    putCity.attr("id");
+    putCity.text(getCity);
+    $("#ciudad").append(putCity);
+
+    var putCity = $(response[cityRandom].name).val();
+    var APIKey = "0273302ea17d84a29b00b53473f15756";
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + myRandomCity + ",mx&appid=" + APIKey;
+    if(myRandomCity= null){
+      location.reload ();
+    }
+console.log(queryURL);
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    })
+        .then(function (response) {
+
+            console.log(queryURL);
+            console.log(response);
+
+            //generate list of five movies according to weather.
+
+            if (response.weather[0].main === "Clouds") {
+                //$("#clima").append("esta nublado");
+                var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=cloud";
+                $.ajax({
+                    url: queryURL,
+                    method: "GET"
+                })
+                    .then(function (response) {
+
+                        var imageUrl = response.data.image_original_url;
+                        var catImage = $("<img>");
+                        catImage.attr("src", imageUrl);
+                        $("#images").prepend(catImage);
+
+                    });
+            }
+           
+            if (response.weather[0].main === "Clear") {
+                //$("#clima").append("Sol calientito");
+
+                var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=sun";
+                $.ajax({
+                    url: queryURL,
+                    method: "GET"
+                })
+                    .then(function (response) {
+
+                        var imageUrl = response.data.image_original_url;
+                        var catImage = $("<img>");
+                        catImage.attr("src", imageUrl);
+                        $("#images").prepend(catImage);
+
+                    });
+            }
+            if (response.weather[0].main === "Rain") {
+                //$("#clima").append("Esta lloviendo...");
+                var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=raining";
+                $.ajax({
+                    url: queryURL,
+                    method: "GET"
+                })
+                    .then(function (response) {
+
+                        var imageUrl = response.data.image_original_url;
+                        var catImage = $("<img>");
+                        catImage.attr("src", imageUrl);
+                        $("#images").prepend(catImage);
+
+                    });
+            }
+            if (response.weather[0].main === "Snow") {
+                //$("#clima").append("Nevando?!?!?!?");
+                var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=snow";
+                $.ajax({
+                    url: queryURL,
+                    method: "GET"
+                })
+                    .then(function (response) {
+
+                        var imageUrl = response.data.image_original_url;
+                        var catImage = $("<img>");
+                        catImage.attr("src", imageUrl);
+                        $("#images").prepend(catImage);
+                    });      
+            }  
+        });  
+});
+//});
+function clear() {
+    $("#images").empty();
+    $("#ciudad").empty();
+    $("#clima").empty();
+}
+
+</script>
+</body>
+</html>
